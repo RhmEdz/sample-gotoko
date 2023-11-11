@@ -32,6 +32,7 @@ func (server *Server) DoLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Disable check password temporary
 	if !ComparePassword(password, password) {
 		SetFlash(w, r, "error", "email or password invalid")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
