@@ -85,10 +85,10 @@ func (server *Server) GetCart(w http.ResponseWriter, r *http.Request) {
 	cart, _ = GetShoppingCart(server.DB, cartID)
 	items, _ := cart.GetItems(server.DB, cartID)
 
-	provinces, err := server.GetProvinces()
-	if err != nil {
-		log.Fatal(err)
-	}
+	provinces := []models.Province{}
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	_ = render.HTML(w, http.StatusOK, "cart", map[string]interface{}{
 		"cart":      cart,

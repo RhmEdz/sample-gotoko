@@ -104,16 +104,28 @@ func (c *Cart) AddItem(db *gorm.DB, item CartItem) (*CartItem, error) {
 		First(&existItem).Error
 
 	if err != nil {
-		subTotal := float64(item.Qty) * (basePrice + taxAmount - discountAmount)
+		// subTotal := float64(item.Qty) * (basePrice + taxAmount - discountAmount)
 
 		item.CartID = c.ID
-		item.BasePrice = product.Price
-		item.BaseTotal = decimal.NewFromFloat(basePrice * float64(item.Qty))
-		item.TaxPercent = decimal.NewFromFloat(GetTaxPercent())
-		item.TaxAmount = decimal.NewFromFloat(taxAmount)
-		item.DiscountPercent = decimal.NewFromFloat(0)
-		item.DiscountAmount = decimal.NewFromFloat(discountAmount)
-		item.SubTotal = decimal.NewFromFloat(subTotal)
+		item.BasePrice = decimal.NewFromFloat(1)
+		item.BaseTotal = decimal.NewFromFloat(1)
+		item.TaxPercent = decimal.NewFromFloat(1)
+		item.TaxAmount = decimal.NewFromFloat(1)
+		item.DiscountPercent = decimal.NewFromFloat(1)
+		item.DiscountAmount = decimal.NewFromFloat(1)
+		item.SubTotal = decimal.NewFromFloat(1)
+
+
+		// item.CartID = c.ID
+		// item.BasePrice = product.Price
+		// item.BaseTotal = decimal.NewFromFloat(basePrice * float64(item.Qty))
+		// item.TaxPercent = decimal.NewFromFloat(GetTaxPercent())
+		// item.TaxAmount = decimal.NewFromFloat(taxAmount)
+		// item.DiscountPercent = decimal.NewFromFloat(0)
+		// item.DiscountAmount = decimal.NewFromFloat(discountAmount)
+		// item.SubTotal = decimal.NewFromFloat(subTotal)
+
+
 
 		err = db.Debug().Create(&item).Error
 		if err != nil {
@@ -141,7 +153,7 @@ func (c *Cart) GetItems(db *gorm.DB, cartID string) ([]CartItem, error) {
 	var items []CartItem
 
 	err := db.Debug().Preload("Product").Model(&CartItem{}).
-		Where("cart_id = ?", cartID).
+		//Where("cart_id = ?", cartID).
 		Order("created_at desc").
 		Find(&items).Error
 	if err != nil {
